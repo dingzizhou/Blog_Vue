@@ -11,7 +11,7 @@
   </div>
   <!-- 主页文章 -->
   <v-row class="home-container">
-    <v-col md="8">
+    <v-col md="10">
       <v-card style="border-radius: 12px 8px 8px 12px" class="article-card"
        v-for="item of articleList" :key="item.id">
         <!-- 文章信息 -->
@@ -45,8 +45,11 @@
         </div>
       </v-card>
     </v-col>
-
   </v-row>
+  <div class="demo-pagination-block">
+    <el-pagination background layout="prev, pager, next, jumper" :total="total" :page-size="10"
+    @current-change="handleCurrentChange" :current-change="current"></el-pagination>
+  </div>
 </div>
 </template>
 
@@ -57,6 +60,8 @@ export default {
   },
   data:function(){
     return{
+      total:100,
+      current:1,
       articleList:[
         {
           id:1,
@@ -74,10 +79,28 @@ export default {
     }
   },
   created(){
-
+    this.getArticleList()
   },
   methods:{
-
+    getArticleList(){
+      var that = this;
+      this.axios({
+        method:'get',
+        url:'/api/home/articleList',
+        params:{
+          current:this.current,
+        }
+      })
+      .then(function(response){
+        if(response.data.flag){
+          that.articleList=response.data.data.articleList;
+          that.total=response.data.data.count;
+        }
+      })
+    },
+    handleCurrentChange(val){
+      this.current=val
+    }
   }
 }
 </script>
@@ -147,5 +170,12 @@ a {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.demo-pagination-block {
+  float: right;
+  margin-right: 320px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 </style>

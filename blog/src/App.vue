@@ -23,7 +23,7 @@ export default {
 
 <style scoped>
 #app {
-  background:gainsboro;
+  background:url(./assets/background_home.png);
   background-size: cover;
 }
 </style>
