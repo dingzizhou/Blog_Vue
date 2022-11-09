@@ -30,7 +30,8 @@ axios.interceptors.request.use(config => {
 })
 import { ElMessage } from 'element-plus';
 axios.interceptors.response.use(response=>{
-    if(response.data.message == "请登录"){
+    console.log(response)
+    if(response.data.code == 401){
         ElMessage.error({
             message:"请登录",
             duration:3000
@@ -40,18 +41,19 @@ axios.interceptors.response.use(response=>{
     return response;
 })
 
-router.beforeEach((to,from,next)=>{
-    if(to.meta.isAdmin){
-        if(adminStore().token){
-            next();
-        }
-        else{
-            router.push('/login')
-        }
-    }
-    else {
-        next();
-    }
-})
+// router.beforeEach((to,from,next)=>{
+//     console.log(adminStore().token)
+//     if(to.meta.isAdmin){
+//         if(adminStore().token){
+//             next();
+//         }
+//         else{
+//             router.push('/login')
+//         }
+//     }
+//     else {
+//         next();
+//     }
+// })
 
 app.mount('#app')

@@ -164,7 +164,7 @@ export default{
       var that = this;
       this.$axios({
         method:'get',
-        url:'/api/categoryList',
+        url:'/api/admin/categoryList',
       })
       .then(function(response){
         if(response.data.flag){
@@ -179,7 +179,7 @@ export default{
       var that = this;
       this.$axios({
         mathod:'get',
-        url:'/api/tagList'
+        url:'/api/admin/tagList'
       })
       .then(function(response){
         if(response.data.flag){

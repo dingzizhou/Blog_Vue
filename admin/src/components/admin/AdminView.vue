@@ -6,9 +6,7 @@
     <div style="display: flex;align-items: center;">
       <span style="margin-left: 15px;">博客后台管理</span>
     </div>
-    <router-link to="/home">
-      <el-button type="info" @click="logout">退出</el-button>
-    </router-link>
+    <el-button type="info" @click="logout">退出</el-button>
   </el-header>
   <!-- 主体 -->
   <el-container>
@@ -23,6 +21,7 @@
 </template>
 
 <script>
+import { adminStore } from '@/store/modules/admin';
 import SideBar from './SideBar.vue';
 export default{
   components:{
@@ -34,7 +33,11 @@ export default{
     }
   },
   methods:{
-    logout(){}
+    logout(){
+      adminStore().token=null;
+      this.$router.push('/login');
+      console.log("退出")
+    }
   }
 }
 </script>

@@ -11,7 +11,7 @@
   </div>
   <!-- 主页文章 -->
   <v-row class="home-container">
-    <v-col md="10">
+    <v-col md="9" cols="12">
       <v-card style="border-radius: 12px 8px 8px 12px" class="article-card"
        v-for="item of articleList" :key="item.id">
         <!-- 文章信息 -->
@@ -29,7 +29,7 @@
             </span>
             <!-- 发表时间 -->
             <i class="el-icon-date"></i>
-            {{ item.createTime | date }}
+            {{ item.createTime}}
             <span class="separator">|</span>
             <!-- 文章分类 -->
             <i class="el-icon-menu"></i>
@@ -44,6 +44,71 @@
           <div class="article-content">{{ item.content }}</div>
         </div>
       </v-card>
+    </v-col>
+    <v-col md="3" cols="12" class="d-md-block d-none">
+      <div class="blog-wrapper">
+        <v-card class="blog-card">
+          <div class="author-wrapper">
+            <v-avatar size="110">
+              <img src="https://static.talkxj.com/photos/b553f564f81a80dc338695acb1b475d2.jpg" class="author-avatar"/>
+            </v-avatar>
+            <div style="font-size: 1.375rem;margin-top:0.625rem">
+              AnchoR
+            </div>
+            <div style="font-size:0.875rem">
+              1111
+            </div>
+          </div>
+          <!-- 统计 -->
+          <div class="blog-info-wrapper">
+            <div class="blog-info-data">
+              <router-link to="/archives">
+                <div style="font-size: 0.875rem">文章</div>
+                <div style="font-size: 1.25rem">
+                  {{ articleCount }}
+                </div>
+              </router-link>
+            </div>
+            <div class="blog-info-data">
+              <router-link to="/archives">
+                <div style="font-size: 0.875rem">分类</div>
+                <div style="font-size: 1.25rem">
+                  {{ categoryCount }}
+                </div>
+              </router-link>
+            </div>
+            <div class="blog-info-data">
+              <router-link to="/archives">
+                <div style="font-size: 0.875rem">标签</div>
+                <div style="font-size: 1.25rem">
+                  {{ tagCount }}
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <!-- 链接 -->
+          <div class="card-info-social">
+            <a href="https://github.com" target="_blank">
+              <img src="../assets/icons/github-black.svg" link="https://github.com"/>
+            </a>
+          </div>
+        </v-card>
+        <!-- 网站信息 -->
+        <v-card class="blog-card">
+            <v-icon color="red">mdi-bell</v-icon>
+            公告
+            <div style="font-size:0.875rem">
+            无
+            </div>
+        </v-card>
+        <!-- <v-card class="blog-card">
+          <div class="web-info">
+            <div>
+              运行时间：<span></span>
+            </div>
+          </div>
+        </v-card> -->
+      </div>
     </v-col>
   </v-row>
   <div class="demo-pagination-block">
@@ -60,6 +125,10 @@ export default {
   },
   data:function(){
     return{
+      time:"",
+      articleCount:0,
+      categoryCount:0,
+      tagCount:0,
       total:100,
       current:1,
       articleList:[
@@ -92,14 +161,16 @@ export default {
         }
       })
       .then(function(response){
+        // console.log(response)
         if(response.data.flag){
-          that.articleList=response.data.data.articleList;
+          that.articleList=response.data.data.list;
           that.total=response.data.data.count;
         }
       })
     },
     handleCurrentChange(val){
       this.current=val
+      this.getArticleList()
     }
   }
 }
@@ -156,6 +227,14 @@ a {
   padding: 0 2.5rem;
   /* width: 55%; */
 }
+.blog-card {
+  line-height: 2;
+  padding: 1.25rem 1.5rem;
+  margin-top: 20px;
+}
+.author-wrapper {
+  text-align: center;
+}
 .article-wrapper a{
   font-size: 1.5rem;
   transition: all 0.3s;
@@ -171,11 +250,44 @@ a {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
-
+.blog-wrapper {
+  position: sticky;
+  top: 10px;
+}
 .demo-pagination-block {
   float: right;
   margin-right: 320px;
   margin-top: 16px;
   margin-bottom: 16px;
+}
+.author-avatar {
+  transition: all 0.5s;
+}
+.author-avatar:hover {
+  transform: rotate(360deg);
+}
+.blog-info-wrapper {
+  display: flex;
+  justify-self: center;
+  padding: 0.875rem 0;
+}
+.blog-info-data {
+  flex: 1;
+  text-align: center;
+}
+.blog-info-data a {
+  text-decoration: none;
+}
+.card-info-social {
+  line-height: 40px;
+  text-align: center;
+  margin: 6px 0 -6px;
+}
+.card-info-social a {
+  font-size: 1.5rem;
+}
+.web-info {
+  padding: 0.25rem;
+  font-size: 0.875rem;
 }
 </style>

@@ -68,6 +68,9 @@ export default {
           adminStore().token=response.data.data;
           that.$router.push('/admin');
         }
+        else{
+          ElMessage.success("密码或账号错误");
+        }
       })
     }
   }
