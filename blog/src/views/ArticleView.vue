@@ -21,20 +21,28 @@
             <template v-if="article.updateTime">
                 {{ article.updateTime }}
               </template>
-              <template v-else>
-                {{ article.createTime }}
-              </template>
-            <span class="separator"> | </span>
           </span>
           </span>
+        </div>
+        <div class="second-line">
           <!-- 文章分类 -->
           <span class="article-category">
             <i class="el-icon-menu"></i>
             {{ article.createTime}}
+            <span class="separator"> | </span>
           </span>
-        </div>
-        <div class="second-line">
-
+          <!-- 文章标签 -->
+          <span class="article-category">
+            <i class="el-icon-s-ticket"></i>
+            <span v-for=" tagItem of article.tagList" :key="tagItem.id">
+              {{tagItem.name}}
+            </span>
+            <span class="separator"> | </span>
+          </span>
+          <!-- 阅读量 -->
+          <span>
+            阅读量：{{article.view}}
+          </span>
         </div>
       </div>
     </div>
@@ -42,7 +50,38 @@
   <!-- 内容 -->
   <v-row class="article-container">
     <v-col>
-      <article class="" v-html="compileMarkdown(article.content)"/>
+      <v-card class="article-wrapper">
+        <article v-html="compileMarkdown(article.content)"/>
+
+        <!-- 前后文章跳转 -->
+        <div class="pagination-post">
+          <!-- 上一篇 -->
+          <div :class="ifFull(lastArticle)" v-if="lastArticle">
+            <router-link :to="'/article/'+lastArticle">
+              <img
+                  class="post-cover"
+                  :src="'https://static.talkxj.com/articles/3dffb2fcbd541886616ab54c92570de3.jpg'"
+                />
+              <div class="post-info">
+                <div class="label">上一篇</div>
+                <div class="post-title">test</div>
+              </div>
+            </router-link>
+          </div>
+          <div :class="ifFull(nextArticle)" v-if="nextArticle">
+            <router-link :to="'/article/'+nextArticle">
+              <img
+                  class="post-cover"
+                  :src="'https://static.talkxj.com/articles/db33914d490eb15b81e6ff4cfacaea84.jpg'"
+                />
+              <div class="post-info"  style="text-align: right">
+                <div class="label">下一篇</div>
+                <div class="post-title">test</div>
+              </div>
+            </router-link>
+          </div>
+        </div>
+      </v-card>
     </v-col>
   </v-row>
 </div>
@@ -62,7 +101,10 @@ export default {
         category:"test",
         cover:'https://static.talkxj.com/articles/3dffb2fcbd541886616ab54c92570de3.jpg',
         content:"<h1>test</h1>",
-      }
+        view:0,
+      },
+      lastArticle:0,
+      nextArticle:2,
     };
   },
   methods:{
@@ -75,6 +117,8 @@ export default {
       .then(function(response){
         if(response.data.flag){
           that.article=response.data.data;
+          that.lastArticle=that.article.id-1;
+          that.nextArticle=that.article.id+1;
         }
       })
     },
@@ -92,6 +136,20 @@ export default {
         this.article.cover +
         ") center center / cover no-repeat"
       );
+    },
+    ifFull(){
+      return function(id){
+        return id ? "post full":"post"
+      }
+    }
+  },
+  watch:{
+    $route:{
+      immediate:true,
+      handler(){
+        this.path = this.$route.path
+        this.getArticle()
+      }
     }
   }
 };
@@ -156,5 +214,57 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+.article-wrapper{
+  padding: 50px 40px;
+}
+.pagination-post {
+  margin-top: 40px;
+  overflow: hidden;
+  width: 100%;
+  background: #000;
+  display: flex;
+}
+.post{
+  width: 50%;
+}
+.full {
+  width: 100% !important;
+}
+.post-info {
+  position: absolute;
+  top: 50%;
+  padding: 20px 40px;
+  width: 100%;
+  transform: translate(0, -50%);
+  line-height: 2;
+  font-size: 14px;
+}
+.post-title {
+  font-weight: 500;
+  color: #fff;
+}
+.label {
+  font-size: 90%;
+  /* color: #eee; */
+  color: #eee;
+}
+.post-cover {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  transition: all 0.6s;
+  object-fit: cover;
+}
+.post a {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: 150px;
+}
+.post:hover .post-cover {
+  opacity: 0.8;
+  transform: scale(1.1);
 }
 </style>

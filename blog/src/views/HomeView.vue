@@ -33,11 +33,12 @@
             <span class="separator">|</span>
             <!-- 文章分类 -->
             <i class="el-icon-menu"></i>
-            {{item.category}}
+            {{item.category.name}}
             <span class="separator">|</span>
+            <i class="el-icon-s-ticket"></i>
             <!-- 文章标签 -->
             <span v-for=" tagItem of item.tagList" :key="tagItem.id">
-              <i class="el-icon-s-ticket"></i>{{tagItem.name}}
+              {{tagItem.name}}
             </span>
           </div>
           <!-- 文章内容 -->
