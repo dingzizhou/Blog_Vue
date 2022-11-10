@@ -30,7 +30,7 @@ axios.interceptors.request.use(config => {
 })
 import { ElMessage } from 'element-plus';
 axios.interceptors.response.use(response=>{
-    console.log(response)
+    // console.log(response)
     if(response.data.code == 401){
         ElMessage.error({
             message:"请登录",

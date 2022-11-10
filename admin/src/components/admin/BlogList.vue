@@ -145,7 +145,7 @@ export default{
         method:'get',
         url:'/api/admin/articleList',
         params:{
-          current:this.current,
+          current:this.currentPage,
           size:this.size,
           keywords:this.keyword,
           categoryId:this.categoryId,
@@ -154,7 +154,7 @@ export default{
       })
       .then(function(response){
         if(response.data.flag){
-          that.articleList=response.data.data.articleList;
+          that.articleList=response.data.data.list;
           that.count=response.data.data.count;
           that.loading=false;
         }

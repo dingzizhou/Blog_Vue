@@ -57,7 +57,7 @@ export default{
       })
       .then(function(response){
         if(response.data.flag){
-          that.article=response.data.data.article;
+          that.article=response.data.data;
         }
         else{
           ElMessage.error("预载文章失败，请返回并重新选择");
@@ -68,7 +68,7 @@ export default{
       var that = this;
       this.$axios({
         method:'get',
-        url:'/api/categoryList',
+        url:'/api/admin/categoryList',
       })
       .then(function(response){
         if(response.data.flag){
@@ -83,7 +83,7 @@ export default{
       var that = this;
       this.$axios({
         method:'get',
-        url:'/api/tagList'
+        url:'/api/admin/tagList'
       })
       .then(function(response){
         if(response.data.flag){
@@ -95,7 +95,7 @@ export default{
       })
     },
     updateOrAddArticle(){
-      console.log(this.article);
+      // console.log(this.article);
       var that = this;
       if(this.article.id!=null){
         this.$axios({
