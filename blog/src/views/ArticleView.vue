@@ -127,7 +127,7 @@ export default {
     }
   },
   created(){
-    this.getArticle()
+    // this.getArticle()
   },
   computed: {
     articleCover(){
